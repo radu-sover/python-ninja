@@ -15,4 +15,4 @@ def before_request():
 def teardown_request(exception):
     db = getattr(g, 'db')
     if db is not None:
-        db.close()
+        db.dispose()
