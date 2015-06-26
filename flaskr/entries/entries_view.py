@@ -6,6 +6,7 @@ from flask import abort, render_template, flash
 from flaskr import app
 from flaskr.repository import entries_repo
 
+# this will have a dependency on the repo
 
 @app.route('/')
 def show_entries():

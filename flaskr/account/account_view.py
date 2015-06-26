@@ -4,10 +4,12 @@ from flask import request, session, g, redirect, url_for
 from flask import abort, render_template, flash
 
 from flaskr import app
+import flaskr.common.logging as logging
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    logging.get_logger(__name__).info(msg='Just an informative log')
     error = None
     if request.method == 'POST':
         if request.form['username'] != app.config['USERNAME']:

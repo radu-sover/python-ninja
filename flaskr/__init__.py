@@ -14,7 +14,7 @@ APPLICATION_NAME = 'flaskr_01'
 # create the flaskr App
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config.from_envvar('APPLICATION_NAME')
+app.config.from_envvar('APPLICATION_NAME', silent=True)
 
 import flaskr.handlers.global_h
 
