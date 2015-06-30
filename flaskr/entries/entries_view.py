@@ -23,3 +23,14 @@ def add_entry():
 
     flash('New entry added successfully')
     return redirect(url_for('show_entries'))
+
+@app.route('/delete', methods=['POST'])
+def remove_entry():
+    if not session.get('logged_in'):
+        abort(401)
+
+    to_remove = request.form['id']
+    entries_repo.remove_entry(g.db, to_remove)
+
+    flash('Entry deleted')
+    return redirect(url_for('show_entries'))

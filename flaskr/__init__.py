@@ -1,20 +1,16 @@
 __author__ = 'radu.sover'
 
 from flask import Flask
-
-# configuration
-DATABASE = 'sqlite:///flaskr.db'
-DEBUG = True
-SECRET_KEY = 'dev'
-USERNAME = 'admin'
-PASSWORD = 'default'
-APPLICATION_NAME = 'flaskr_01'
+from flask_debugtoolbar import DebugToolbarExtension
 
 
 # create the flaskr App
 app = Flask(__name__)
-app.config.from_object(__name__)
-app.config.from_envvar('APPLICATION_NAME', silent=True)
+app.config.from_object('config')
+
+toolbar = DebugToolbarExtension()
+
+toolbar.init_app(app)
 
 import flaskr.handlers.global_h
 

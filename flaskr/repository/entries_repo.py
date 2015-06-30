@@ -1,7 +1,7 @@
 __author__ = 'radu.sover'
 
 # from sqlalchemy import engine
-from sqlalchemy import select
+from sqlalchemy import select, bindparam
 from flaskr.repository import db_meta
 
 # this will receive a database connection / database engine
@@ -12,9 +12,13 @@ from flaskr.repository import db_meta
 
 def all_entries(database):
     con = database.connect()
-    s = select([db_meta.entries.c.title, db_meta.entries.c.text])
+    s = select([db_meta.entries])
     result = con.execute(s)
-    entries = [dict(title=row[0], text=row[1]) for row in result]
+    entries = [dict(
+                id=row[db_meta.entries.c.id],
+                title=row[db_meta.entries.c.title],
+                text=row[db_meta.entries.c.text]) for row in result]
+
     result.close()
     return entries
 
@@ -23,3 +27,8 @@ def add_entry(database, title, text):
     con = database.connect()
     ins = db_meta.entries.insert().values(title=title, text=text)
     result = con.execute(ins)
+
+def remove_entry(database, id):
+    con = database.connect()
+    s = db_meta.entries.delete().where(db_meta.entries.c.id == bindparam('id'))
+    result = con.execute(s, id=id)
