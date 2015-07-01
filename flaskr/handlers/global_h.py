@@ -14,6 +14,5 @@ def before_request():
 @app.teardown_request
 def teardown_request(exception):
     db = getattr(g, 'db')
-    print(db)
     if db is not None:
         db.dispose()

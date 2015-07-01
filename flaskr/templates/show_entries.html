@@ -16,6 +16,7 @@
             <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}
               <form action="{{ url_for('remove_entry') }}" method="post">
                 <input type="hidden" name="id" value="{{entry.id}}">
+                <input type="hidden" name="_id" value="{{entry._id}}">
                 <input type="submit" value="Delete">
               </form>
                 {% else %}
