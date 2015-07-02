@@ -8,7 +8,7 @@ from flaskr.repository.storage import connect_db
 
 @app.before_request
 def before_request():
-    g.db = connect_db()
+    g.db = connect_db(app.config)
 
 
 @app.teardown_request

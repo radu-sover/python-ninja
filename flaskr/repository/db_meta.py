@@ -6,3 +6,8 @@ entries = Table('entries', metadata,
     Column('title', String),
     Column('text', String)
     )
+
+statistics = Table('statistics', metadata,
+    Column('name', String, primary_key=True),
+    Column('count', Integer, nullable=False)
+    )

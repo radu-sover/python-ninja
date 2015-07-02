@@ -1,17 +1,18 @@
 __author__ = 'radu.sover'
 
-
-from contextlib import closing
-
+#ok
 from sqlalchemy import create_engine
-from flaskr import app
-
-def connect_db():
-    return create_engine(app.config['DATABASE'])
+from flaskr.repository.db_meta import metadata
 
 
-def init_db():
-    with closing(connect_db()) as db:
-        with open('schema.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
+def connect_db(config):
+    return create_engine(config['DATABASE'])
+
+
+def init_db(config):
+    engine = create_engine(config['DATABASE'])
+    metadata.create_all(engine)
+    # with closing(connect_db()) as db:
+    #     with open('schema.sql', mode='r') as f:
+    #         db.cursor().executescript(f.read())
+    #     db.commit()

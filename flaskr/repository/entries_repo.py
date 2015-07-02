@@ -21,24 +21,22 @@ def all_entries(database, mongo):
                 row[db_meta.entries.c.text]) for row in result]
 
     result.close()
-
-    entries = mongo.db.entries.find()
-
+    # entries = mongo.db.entries.find()
     return entries
 
 
 def add_entry(database, mongo, title, text):
     con = database.connect()
     ins = db_meta.entries.insert().values(title=title, text=text)
-    result = con.execute(ins)
+    con.execute(ins)
+    # entries = mongo.db.entries
+    # entries.insert(Entry(result.lastrowid, title, text).storage())
 
-    entries = mongo.db.entries
-    entries.insert(Entry(result.lastrowid, title, text).__dict__)
 
-
-def remove_entry(database, mongo, id, mongo_id):
+def remove_entry(database, mongo, db_id, mongo_id):
     con = database.connect()
-    s = db_meta.entries.delete().where(db_meta.entries.c.id == bindparam('id'))
-    result = con.execute(s, id=id)
+    s = db_meta.entries.delete().where(db_meta.entries.c.id == bindparam('db_id'))
+    result = con.execute(s, db_id=db_id)
+    return result
     # en = mongo.db.entries.find(mongo_id)
     # mongo.db.entries.remove(en)

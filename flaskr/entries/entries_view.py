@@ -5,6 +5,7 @@ from flask import abort, render_template, flash
 
 from flaskr import app, mongo
 from flaskr.repository import entries_repo
+from flaskr.repository import statistics_repo as s_repo
 
 # this will have a dependency on the repo
 
@@ -19,10 +20,13 @@ def add_entry():
     if not session.get('logged_in'):
         abort(401)
 
-    entries_repo.add_entry(g.db, mongo, request.form['title'], request.form['text'])
+    with g.db.begin() as connection:
+        entries_repo.add_entry(connection, mongo, request.form['title'], request.form['text'])
+        s_repo.increment_post(connection)
 
     flash('New entry added successfully')
     return redirect(url_for('show_entries'))
+
 
 @app.route('/delete', methods=['POST'])
 def remove_entry():
@@ -31,7 +35,9 @@ def remove_entry():
 
     to_remove = request.form['id']
     mongo_id = request.form['_id']
-    entries_repo.remove_entry(g.db, mongo, to_remove, mongo_id)
+    with g.db.begin() as connection:
+        entries_repo.remove_entry(connection, mongo, to_remove, mongo_id)
+        s_repo.increment_delete(connection)
 
     flash('Entry deleted')
     return redirect(url_for('show_entries'))
