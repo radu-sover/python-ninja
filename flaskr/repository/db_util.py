@@ -1,5 +1,6 @@
 import functools
 
+
 def execute_with_transaction(function, database):
     @functools.wraps(function)
     def wrap(*args, **kwargs):

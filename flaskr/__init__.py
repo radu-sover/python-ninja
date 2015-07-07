@@ -2,8 +2,8 @@ __author__ = 'radu.sover'
 
 import logging
 from flask import Flask
-from flask.ext.pymongo import PyMongo
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask.ext.pymongo import PyMongo
+# from flask_debugtoolbar import DebugToolbarExtension
 from flaskr.repository import storage
 
 
@@ -11,9 +11,9 @@ from flaskr.repository import storage
 app = Flask(__name__)
 
 app.config.from_object('config')
-mongo = PyMongo(app=app)
+# mongo = PyMongo(app=app)
 
-toolbar = DebugToolbarExtension()
+# toolbar = DebugToolbarExtension()
 # toolbar.init_app(app)
 
 storage.init_db(app.config)

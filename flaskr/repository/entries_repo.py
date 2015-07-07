@@ -11,14 +11,15 @@ from ..model.entry import Entry
 #     def __init__(self, db_engine):
 #         self.db_engine = db_engine
 
+
 def all_entries(database, mongo):
     con = database.connect()
     s = select([db_meta.entries])
     result = con.execute(s)
     entries = [Entry(
-                row[db_meta.entries.c.id],
-                row[db_meta.entries.c.title],
-                row[db_meta.entries.c.text]) for row in result]
+        row[db_meta.entries.c.id],
+        row[db_meta.entries.c.title],
+        row[db_meta.entries.c.text]) for row in result]
 
     result.close()
     # entries = mongo.db.entries.find()

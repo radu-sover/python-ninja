@@ -1,6 +1,6 @@
 __author__ = 'radu.sover'
 
-#ok
+
 from sqlalchemy import create_engine
 from flaskr.repository.db_meta import metadata
 
