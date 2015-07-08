@@ -12,7 +12,7 @@ from ..model.entry import Entry
 #         self.db_engine = db_engine
 
 
-def all_entries(database, mongo):
+def all_entries(database):
     con = database.connect()
     s = select([db_meta.entries])
     result = con.execute(s)
@@ -26,7 +26,7 @@ def all_entries(database, mongo):
     return entries
 
 
-def add_entry(database, mongo, title, text):
+def add_entry(database, title, text):
     con = database.connect()
     ins = db_meta.entries.insert().values(title=title, text=text)
     con.execute(ins)
@@ -34,7 +34,7 @@ def add_entry(database, mongo, title, text):
     # entries.insert(Entry(result.lastrowid, title, text).storage())
 
 
-def remove_entry(database, mongo, db_id, mongo_id):
+def remove_entry(database, db_id, mongo_id):
     con = database.connect()
     s = db_meta.entries.delete().where(db_meta.entries.c.id == bindparam('db_id'))
     result = con.execute(s, db_id=db_id)

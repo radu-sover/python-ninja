@@ -3,7 +3,7 @@ __author__ = 'radu.sover'
 from flask import request, session, g, redirect, url_for
 from flask import abort, render_template, flash
 
-from flaskr import app, mongo
+from flaskr import app
 from flaskr.repository import entries_repo
 from flaskr.repository import statistics_repo as s_repo
 
@@ -11,7 +11,7 @@ from flaskr.repository import statistics_repo as s_repo
 
 @app.route('/')
 def show_entries():
-    entries = entries_repo.all_entries(g.db, mongo)
+    entries = entries_repo.all_entries(g.db)
     return render_template('show_entries.html', entries=entries)
 
 
@@ -21,7 +21,7 @@ def add_entry():
         abort(401)
 
     with g.db.begin() as connection:
-        entries_repo.add_entry(connection, mongo, request.form['title'], request.form['text'])
+        entries_repo.add_entry(connection, request.form['title'], request.form['text'])
         s_repo.increment_post(connection)
 
     flash('New entry added successfully')
@@ -36,7 +36,7 @@ def remove_entry():
     to_remove = request.form['id']
     mongo_id = request.form['_id']
     with g.db.begin() as connection:
-        entries_repo.remove_entry(connection, mongo, to_remove, mongo_id)
+        entries_repo.remove_entry(connection, to_remove, mongo_id)
         s_repo.increment_delete(connection)
 
     flash('Entry deleted')
